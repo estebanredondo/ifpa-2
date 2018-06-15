@@ -1,1 +1,159 @@
-fer gd g;lerk gotejdjgio dio
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+
+
+//Premier exemple de composant
+var mountNode = document.getElementById('mountNode');
+ 
+class MyComponent extends React.Component {
+    render(){
+        return (
+        <h1>Salut Greg</h1>
+        )
+    }
+}
+
+ReactDOM.render(<MyComponent />,mountNode);
+
+
+
+var mountNodeTwo = document.getElementById('mountNodeTwo');
+//Exemple de composant avec des props. 
+class MyComponentTwo extends React.Component {
+    render(){
+        return (
+        <h1>Salut {this.props.name}</h1>
+        )
+    }
+}
+
+ReactDOM.render(<MyComponentTwo name="Greg"/>,mountNodeTwo);
+
+
+
+var mountNodeThree = document.getElementById('mountNodeThree');
+//Exemple de composant avec des states (Composant qui peut etre modifier en cours d appli) 
+class MyComponentThree extends React.Component {
+    constructor(){
+        super();//recupere tout ce qu il y avait dans le composent parent => {{parent() }} dans twig
+        this.state={name: 'Greg 3'};
+    }
+    render(){
+        return (
+        <h1>Salut {this.state.name}</h1>
+        )
+    }
+}
+
+ReactDOM.render(<MyComponentThree name="Gregory" />,mountNodeThree); //On peut laisser le name il ne change rien
+
+
+
+var mountNodeFour = document.getElementById('mountNodeFour');
+//Exemple de composant avec du style css
+class MyComponentFour extends React.Component {
+    constructor(){
+        super();//recupere tout ce qu il y avait dans le composent parent => {{parent() }} dans twig
+        this.state={name: 'Greg 4'};
+    }
+
+    render(){
+        return (
+        <h2 style={{color:this.props.color ? this.props.color : 'red '}}>Salut {this.state.name}</h2> //utilisation de ternaire pour valeur par defaut
+        )
+    }
+}
+
+ReactDOM.render(<MyComponentFour color="blue" />, mountNodeFour); 
+
+
+//Reaction au clic 
+//On definit le  on click, puis on cree la fonction, et on attache le contexte a cette fonction dnas le constructor
+var mountNodeFive = document.getElementById('mountNodeFive');
+//Exemple de composant avec du style css
+class MyComponentFive extends React.Component {
+    constructor(){
+        super();//recupere tout ce qu il y avait dans le composent parent => {{parent() }} dans twig
+        this.state={name: 'Greg 5'};
+        this.changeName = this.changeName.bind(this)
+    }
+        
+    changeName(){
+        //this.state.name = "Toto";  Interdit. Un state est protege pour eviter le changement abusif
+        console.log('je clique');
+        this.setState({name : "toto"} );
+    }
+    render(){
+        return (
+        <h2 onClick={this.changeName}>Salut {this.state.name}</h2>
+        )
+    }
+}
+
+ReactDOM.render(<MyComponentFive />, mountNodeFive); 
+
+
+//On peut stocker un composant dans une variable 
+var component = ReactDOM.render(<MyComponentFive />, mountNodeFive); 
+console.log(component);
+
+
+//Un composant a un cycle de vie
+var mountNodeSix = document.getElementById('mountNodeSix');
+//Exemple de composant avec du style css
+class MyComponentSix extends React.Component {
+    constructor(){
+        super();//recupere tout ce qu il y avait dans le composent parent => {{parent() }} dans twig
+        this.state={name: 'Greg 6'};
+        this.changeName = this.changeName.bind(this)
+    }
+        
+    changeName(){
+        //this.state.name = "Toto";  Interdit. Un state est protege pour eviter le changement abusif
+        console.log('je clique');
+        this.setState({name : "toto"} );
+    }
+    render(){
+        return (
+        <h2 onClick={this.changeName} ref={(title)=> console.log(title)}>Salut {this.state.name}</h2>
+        //Quand on clique sur le texte on voit bien le changement d etat dans la console. Ca s appelle un cycle de vie
+        )
+    }
+}
+
+ReactDOM.render(<MyComponentSix />, mountNodeSix); 
+
+
+
+
+
+//UOn utilise les references pour passer les elements entre les differents elements REACT
+var mountNodeSeven = document.getElementById('mountNodeSeven');
+//Exemple de composant avec du style css
+class MyComponentSeven extends React.Component {
+    constructor(){
+        super();//recupere tout ce qu il y avait dans le composent parent => {{parent() }} dans twig
+        this.state={name: 'Greg 7'};
+        this.changeName = this.changeName.bind(this)
+    }
+        
+    changeName(){
+        //this.state.name = "Toto";  Interdit. Un state est protege pour eviter le changement abusif
+        console.log('je clique');
+        this.setState({name : "encore un nouveau nom"} );
+        console.log(this.title);
+    }
+    render(){
+        return (
+        <h2 onClick={this.changeName} ref={(title)=> this.title = title }>Salut {this.state.name}</h2>
+        //On checke en direct le nom du titre et on peut du coup l utiliser dans une fonction du composant 
+        )
+    }
+}
+
+ReactDOM.render(<MyComponentSeven />, mountNodeSeven); 
+
+
